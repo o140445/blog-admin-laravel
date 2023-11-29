@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\Api;
+use App\Http\Controllers\Api\Controller\AuthController;
+use App\Http\Controllers\Api\Controller\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,13 +17,13 @@ use Illuminate\Support\Facades\Route;
 
 // routes/api.php
 // 注册和登录路由
-Route::post('register', [Api\Controller\AuthController::class, 'register']);
-Route::post('login', [Api\Controller\AuthController::class, 'login']);
+Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login'])->name('login');
 
 // 需要身份验证的路由
 Route::middleware('auth:api')->group(function () {
-    // 添加需要认证的路由
-//    Route::get('user', [AuthController::class, 'user']); // 例：获取当前用户信息
-//    Route::post('logout', [AuthController::class, 'logout']);
-    // 在这里添加其他需要认证的路由
+    Route::get('logout', [AuthController::class, 'logout']);
+    Route::get('refresh', [AuthController::class, 'refresh']);
+
+    Route::get('user', [UserController::class, 'getDetails']);
 });

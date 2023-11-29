@@ -5,14 +5,15 @@ namespace App\Http\Controllers\Api\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Panfu\Laravel\HCaptcha\Facades\HCaptcha;
 
 class AuthRequest extends FormRequest
 {
     protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json([
-            'status' => 'error',
-            'message' => $validator->errors()->first(),
+            'code' => '0',
+            'msg' => $validator->errors()->first(),
         ], 400));
     }
 
@@ -40,11 +41,13 @@ class AuthRequest extends FormRequest
                     'user_name' => 'required|string|unique:users',
                     'email' => 'required|email|unique:users',
                     'password' => 'required|string|min:6',
+                    'h-captcha-response' => 'hcaptcha',
                 ];
             case "login";
                 return [
                     'user_name' => 'required|string',
                     'password' => 'required|string|min:6',
+                    'h-captcha-response' => 'hcaptcha',
                 ];
             default:
                 return [];

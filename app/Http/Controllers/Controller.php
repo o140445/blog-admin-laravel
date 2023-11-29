@@ -10,13 +10,13 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
 
-    public function jsonSuccess($data, $msg = "ok", $status = 200)
+    public function jsonSuccess($data = [], $msg = "ok", $status = 0)
     {
-        return response()->json(['status'=>$status, 'msg'=>$msg, 'data' => $data], 200);
+        return response()->json(['code' => $status, 'msg' => $msg, 'data' => $data], 200);
     }
 
-    public function jsonError($msg = "error", $status = 400)
+    public function jsonError($msg = "error", $status = -1)
     {
-        return response()->json(['status' => $status, 'msg'=>$msg], 400);
+        return response()->json(['code' => $status, 'msg' => $msg], 400);
     }
 }
